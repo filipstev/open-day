@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-    }
+        string tag = collision.gameObject.tag;
+        Debug.Log(tag);
+        switch (tag)
+        {
+            case "Dead":
+                GameManager.instance.GameEnd();
+                break;
+            case "Bouncer":
+                GameManager.instance.UpdateScore(10, 1);
+                break;
+            case "Point":
+                GameManager.instance.UpdateScore(20, 1);
+                break;
+            case "Side":
+                GameManager.instance.UpdateScore(10, 0);
+                break;
+            case "Flipper":
+                GameManager.instance.multiplier = 1;
+                break;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            default:
+                break;
+        }
     }
 }
