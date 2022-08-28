@@ -6,12 +6,14 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject ball, startButton, highScoreText, scoreText, quitButton, restartButton;
+    GameObject ball, highScoreText, scoreText, quitButton, restartButton;
+    Name nameScript;
 
     int score, highScore;
 
@@ -46,7 +48,16 @@ public class GameManager : MonoBehaviour
         canPlay = false;
 
     }
-
+    private void Start()
+    {
+        GameStart();
+        if (GameObject.FindObjectOfType<Name>() != null)
+        {
+            nameScript = GameObject.FindObjectOfType<Name>();
+        }
+        
+      
+    }
     private void Update()
     {
         if (!canPlay) return;
@@ -93,10 +104,10 @@ public class GameManager : MonoBehaviour
         highScoreText.GetComponent<TMP_Text>().text = "HighScore: " + highScore;
     }
 
-    public void GameStart()
+    void GameStart()
     {
         highScoreText.SetActive(false);
-        startButton.SetActive(false);
+        
         scoreText.SetActive(true);
         Instantiate(ball, startPos, Quaternion.identity);
         Debug.Log("Tekst");
@@ -107,8 +118,9 @@ public class GameManager : MonoBehaviour
     {
  #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
- #endif
-        Application.Quit(); 
+        SceneManager.LoadScene(0);
+#endif
+
     }
 
     public void GameRestart()
